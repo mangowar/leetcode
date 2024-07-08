@@ -1,5 +1,5 @@
 #include<vector>
-#include<stack>
+#include<list>
 #include<unordered_map>
 #include<iostream>
 using namespace std;
@@ -12,7 +12,7 @@ struct Node
 };
 
 
-class LRUCache {
+class LRUCache1 {
 public:
     LRUCache(int capacity) {
         if(capacity > 0)
@@ -101,6 +101,43 @@ private:
     unordered_map<int, Node*> mins;
     Node* start = nullptr;
     Node* end = nullptr;
+};
+
+class LRUCache {
+public:
+    LRUCache(int capacity) {
+        if(capacity > 0)
+            this->capacity = capacity;
+        else
+            this->capacity = 0;
+    }
+    
+    int get(int key) {
+        if(keys.find(key) != keys.end()) {
+            values.splice(values.begin(), values, keys[key]);
+            return values.front().second;
+        }
+        else 
+            return -1;
+    }
+    
+    void put(int key, int value) {
+        if(keys.find(key) != keys.end()) {
+            values.erase(keys[key]);
+        }
+        else {
+            if(values.size() == capacity) {
+                keys.erase(values.back().first);
+                values.pop_back();
+            }
+        }
+        values.push_front({key, value});
+        keys[key] = values.begin();
+    }
+private:
+    int capacity;
+    unordered_map<int, list<pair<int, int>>::iterator> keys;
+    list<pair<int, int>> values;
 };
 
 /**
