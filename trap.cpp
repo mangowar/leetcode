@@ -1,7 +1,7 @@
 #include<iostream>
 #include<vector>
 using namespace std;
-class Solution {
+class Solution1 {
 public:
     int trap(vector<int>& height) {
         int res{0}, l{1}, r = height.size()-2;
@@ -47,6 +47,28 @@ public:
         return res;
     }
 };
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int l = 0, r = height.size()-1, res = 0;
+        int left_max = height[l], right_max = height[r];
+        while(l < r) {
+            if(left_max > right_max) {
+                l++;
+                left_max = max(left_max, height[l]);
+                res += left_max - height[l];
+            }
+            else {
+                r--;
+                right_max = max(right_max, height[r]);
+                res += right_max - height[r];
+            }
+        }
+        return res;
+    }
+};
+
 int main()
 {
     Solution s;
